@@ -1,18 +1,62 @@
 let users = [
-    {id: 1, nombre: "Andres", apellido: "Pacheco", edad: 38, profesion: "developer", created_at: "2022-09-26T06:25:21.118Z"},
-    {id: 2, nombre: "Andrea", apellido: "Sanchez", edad: 25, profesion: "profesor", created_at: "2022-04-18T14:14:32.879Z"},
-    {id: 3, nombre: "Julia", apellido: "Ochoa", edad: 32, profesion: "musico", created_at: "2021-12-14T11:53:38.279Z"},
-    {id: 4, nombre: "Samuel", apellido: "Martinez", edad: 29, profesion: "programador", created_at: "2022-01-26T03:31:15.202Z"},
-    {id: 5, nombre: "Roberto", apellido: "Mattos", edad: 40, profesion: "chef", created_at: "2022-07-27T02:06:22.760Z"},
-    {id: 6, nombre: "Mercedes", apellido: "Sanchez", edad: 35, profesion: "veterinario", created_at: "2022-05-01T22:06:35.864Z"},
-]
- 
-// Crear una funcion que permita ordenar la lista de usuarios por fecha de creacion, de la mas nueva a la mas antigua y viceversa
-// utilizando el parametro booleano reverse (si es true se ordenaran de nuevo a antiguo)
- 
-//13. Crear una funcion que permita filtrar los usuarios por mes y año de creacion.
- 
-// let month=prompt("Ingresar: ");let mes=+prompt("ingrese mes");
+   {
+      id: 1,
+      nombre: "Andres",
+      apellido: "Pacheco",
+      edad: 38,
+      profesion: "developer",
+      created_at: "2022-09-26T06:25:21.118Z",
+      modified_at: "",
+   },
+   {
+      id: 2,
+      nombre: "Andrea",
+      apellido: "Sanchez",
+      edad: 25,
+      profesion: "profesor",
+      created_at: "2022-04-18T14:14:32.879Z",
+      modified_at: "",
+   },
+   {
+      id: 3,
+      nombre: "Julia",
+      apellido: "Ochoa",
+      edad: 32,
+      profesion: "musico",
+      created_at: "2021-12-14T11:53:38.279Z",
+      modified_at: "",
+   },
+   {
+      id: 4,
+      nombre: "Samuel",
+      apellido: "Martinez",
+      edad: 29,
+      profesion: "programador",
+      created_at: "2022-01-26T03:31:15.202Z",
+      modified_at: "",
+   },
+   {
+      id: 5,
+      nombre: "Roberto",
+      apellido: "Mattos",
+      edad: 40,
+      profesion: "chef",
+      created_at: "2022-07-27T02:06:22.760Z",
+      modified_at: "",
+   },
+   {
+      id: 6,
+      nombre: "Mercedes",
+      apellido: "Sanchez",
+      edad: 35,
+      profesion: "veterinario",
+      created_at: "2022-05-01T22:06:35.864Z",
+      modified_at: "",
+   },
+];
+
+
+//FIltrar mes y año
 let mes=+prompt("ingrese mes");
 let anio=+prompt("ingrese año");
 
@@ -40,9 +84,34 @@ function filtrarUsuarios(year, month) {
     console.log(usersFilter);
   }
   filtrarUsuarios(anio, mes);
+
+// Funcion para crear usuarios
+function create() {
+   const newUser = {
+      id: 0,
+      nombre: "",
+      apellido: "",
+      edad: 0,
+      profesion: "",
+      created_at: "",
+   };
+   for (const prop in newUser) {
+      if (prop === "id") {
+         newUser[prop] = users.length + 1;
+      } else if (prop === "edad") {
+         newUser[prop] = +prompt(`Ingrese ${[prop]} por favor: `);
+      } else if (prop === "created_at") {
+         newUser[prop] = new Date().toISOString();
+      } else {
+         newUser[prop] = prompt(`Ingrese ${[prop]} por favor: `);
+      }
+    }
+  }
+
 // Funcion para leer los usuarios
 function read() {
    const root = document.getElementById("root");
+   root.innerHTML = "";
 
    // Leer encabezados
    const keys = Object.keys(users[0]);
@@ -75,7 +144,6 @@ function read() {
          tr.append(td);
       });
    });
-   // add and extra space
    const br = document.createElement("br");
    root.append(br);
    return;
@@ -83,17 +151,70 @@ function read() {
 
 // Actualizar usuarios
 function update() {
-   return;
+   let id = +prompt("Ingrese id del usuario a actualizar");
+   let user = users.find((user) => user.id === id);
+   console.log(user);
+   if (user) {
+      for (const prop in user) {
+         if (prop === "id" || prop === "created_at") {
+            continue;
+         } else if (prop === "edad") {
+            user[prop] = +prompt(`Ingrese ${[prop]} por favor: `);
+         } else if (prop === "modified_at") {
+            user[prop] = new Date().toISOString();
+         } else {
+            user[prop] = prompt(`Ingrese ${[prop]} por favor: `);
+         }
+      }
+   } else {
+      alert("Usuario no existe");
+   }
+   read();
 }
 
 // Eliminar usuario
-function del() {
-   return;
+function del() {    
+   const indice = +prompt("Ingrese el id del usuario a eliminar: ")
+   const seguro = prompt("Esta usted seguro? Si/No")
+   if(seguro.toLowerCase() === "si"){
+      users.splice((indice-1),1)
+      alert("Usuario eliminado")
+   }else if(seguro.toLowerCase() === "no"){
+      alert("No se elimino ningun usuario")
+   }else {
+      alert("Ingrese una respuesta valida")
+   }
+   read();
 }
 
 // Ordenar por fecha
-function sort_by_date() {
-   return;
+function sort_by_date(reverse = false) {
+   if (reverse) {
+      users.sort((a, b) => {
+         const dateA = new Date(a.created_at);
+         const dateB = new Date(b.created_at);
+         return dateB - dateA;
+      });
+   } else {
+      users.sort((a, b) => {
+         const dateA = new Date(a.created_at);
+         const dateB = new Date(b.created_at);
+         return dateA - dateB;
+      });
+   }
+   read();
+}
+
+// Ordenar los registros de manera ascendente haciendo click y con el siguiente click descendente
+
+function sort_by_headers() {
+   const ths = document.querySelectorAll("th");
+   ths.forEach((th) => {
+      th.addEventListener("click", (e) => {
+         sort_by_date();
+         read();
+      });
+   });
 }
 
 // Filtrar por (mes o año)
@@ -127,6 +248,8 @@ function new_button(name, color_over, color_out, event) {
 }
 
 function main() {
+   read();
+   sort_by_headers();
    //create
    new_button("Crear", "green", "darkgreen", create);
    //read
@@ -135,8 +258,6 @@ function main() {
    new_button("Actualizar", "orange", "darkorange", update);
    //delete
    new_button("Borrar", "red", "darkred", del);
-   // Ordenar por fecha
-   new_button("Ordenar", "purple", "darkpurple", sort_by_date);
    // Filtrar por
    new_button("Filtrar", "brown", "darkbrown", filter_by);
 }
