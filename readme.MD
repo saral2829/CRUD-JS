@@ -1,2 +1,2 @@
-Ejercicios de JavaScript resueltos en clases.
-SESION 1-2-3
+CRUD REALIZADO CON JAVASCRIPT PROPUESTO EN CLASE
+
