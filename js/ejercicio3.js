@@ -145,8 +145,18 @@ function update() {
 }
 
 // Eliminar usuario
-function del() {
-   return;
+function del() {    
+   const indice = +prompt("Ingrese el id del usuario a eliminar: ")
+   const seguro = prompt("Esta usted seguro? Si/No")
+   if(seguro.toLowerCase() === "si"){
+      users.splice((indice-1),1)
+      alert("Usuario eliminado")
+   }else if(seguro.toLowerCase() === "no"){
+      alert("No se elimino ningun usuario")
+   }else {
+      alert("Ingrese una respuesta valida")
+   }
+   read();
 }
 
 // Ordenar por fecha
