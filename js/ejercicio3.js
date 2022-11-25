@@ -151,9 +151,21 @@ let users = [
 // utilizando el parametro booleano reverse (si es true se ordenaran de nuevo a antiguo)
  
 //13. Crear una funcion que permita filtrar los usuarios por mes y año de creacion.
+ 
+const values=[
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo"
+]
 
-const found = users.find(element => element = "2022-07-27T02:06:22.760Z");
-console.log(found);
+
+
+const filtered = use.filter((user) => {
+    const date = new Date(user.created_at);
+    return values[date.getMonth()];
+    })
 
 //14. Elaborar un programa que permita al admin a traves de prompts y alerts lo siguiente:
 // CREATE
