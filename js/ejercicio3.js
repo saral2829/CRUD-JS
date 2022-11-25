@@ -160,8 +160,33 @@ function del() {
 }
 
 // Ordenar por fecha
-function sort_by_date() {
-   return;
+function sort_by_date(reverse = false) {
+   if (reverse) {
+      users.sort((a, b) => {
+         const dateA = new Date(a.created_at);
+         const dateB = new Date(b.created_at);
+         return dateB - dateA;
+      });
+   } else {
+      users.sort((a, b) => {
+         const dateA = new Date(a.created_at);
+         const dateB = new Date(b.created_at);
+         return dateA - dateB;
+      });
+   }
+   read();
+}
+
+// Ordenar los registros de manera ascendente haciendo click y con el siguiente click descendente
+
+function sort_by_headers() {
+   const ths = document.querySelectorAll("th");
+   ths.forEach((th) => {
+      th.addEventListener("click", (e) => {
+         sort_by_date();
+         read();
+      });
+   });
 }
 
 // Filtrar por (mes o año)
@@ -195,6 +220,8 @@ function new_button(name, color_over, color_out, event) {
 }
 
 function main() {
+   read();
+   sort_by_headers();
    //create
    new_button("Crear", "green", "darkgreen", create);
    //read
@@ -203,8 +230,6 @@ function main() {
    new_button("Actualizar", "orange", "darkorange", update);
    //delete
    new_button("Borrar", "red", "darkred", del);
-   // Ordenar por fecha
-   new_button("Ordenar", "purple", "darkpurple", sort_by_date);
    // Filtrar por
    new_button("Filtrar", "brown", "darkbrown", filter_by);
 }
