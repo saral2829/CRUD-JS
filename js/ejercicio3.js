@@ -6,6 +6,7 @@ let users = [
       edad: 38,
       profesion: "developer",
       created_at: "2022-09-26T06:25:21.118Z",
+      modified_at: "",
    },
    {
       id: 2,
@@ -14,6 +15,7 @@ let users = [
       edad: 25,
       profesion: "profesor",
       created_at: "2022-04-18T14:14:32.879Z",
+      modified_at: "",
    },
    {
       id: 3,
@@ -22,6 +24,7 @@ let users = [
       edad: 32,
       profesion: "musico",
       created_at: "2021-12-14T11:53:38.279Z",
+      modified_at: "",
    },
    {
       id: 4,
@@ -30,6 +33,7 @@ let users = [
       edad: 29,
       profesion: "programador",
       created_at: "2022-01-26T03:31:15.202Z",
+      modified_at: "",
    },
    {
       id: 5,
@@ -38,6 +42,7 @@ let users = [
       edad: 40,
       profesion: "chef",
       created_at: "2022-07-27T02:06:22.760Z",
+      modified_at: "",
    },
    {
       id: 6,
@@ -46,6 +51,7 @@ let users = [
       edad: 35,
       profesion: "veterinario",
       created_at: "2022-05-01T22:06:35.864Z",
+      modified_at: "",
    },
 ];
 
@@ -65,7 +71,7 @@ function create() {
       } else if (prop === "edad") {
          newUser[prop] = +prompt(`Ingrese ${[prop]} por favor: `);
       } else if (prop === "created_at") {
-         newUser[prop] = new Date();
+         newUser[prop] = new Date().toISOString();
       } else {
          newUser[prop] = prompt(`Ingrese ${[prop]} por favor: `);
       }
@@ -77,6 +83,7 @@ function create() {
 // Funcion para leer los usuarios
 function read() {
    const root = document.getElementById("root");
+   root.innerHTML = "";
 
    // Leer encabezados
    const keys = Object.keys(users[0]);
@@ -109,7 +116,6 @@ function read() {
          tr.append(td);
       });
    });
-   // add and extra space
    const br = document.createElement("br");
    root.append(br);
    return;
@@ -117,7 +123,25 @@ function read() {
 
 // Actualizar usuarios
 function update() {
-   return;
+   let id = +prompt("Ingrese id del usuario a actualizar");
+   let user = users.find((user) => user.id === id);
+   console.log(user);
+   if (user) {
+      for (const prop in user) {
+         if (prop === "id" || prop === "created_at") {
+            continue;
+         } else if (prop === "edad") {
+            user[prop] = +prompt(`Ingrese ${[prop]} por favor: `);
+         } else if (prop === "modified_at") {
+            user[prop] = new Date().toISOString();
+         } else {
+            user[prop] = prompt(`Ingrese ${[prop]} por favor: `);
+         }
+      }
+   } else {
+      alert("Usuario no existe");
+   }
+   read();
 }
 
 // Eliminar usuario
