@@ -152,11 +152,8 @@ let users = [
  
 //13. Crear una funcion que permita filtrar los usuarios por mes y año de creacion.
 
-let month=prompt("Ingrese mes")
-const filtered = users.filter((user) => {
-    const date = new Date(user.created_at);
-    return date.getMonth() == month;
-})
+const found = users.find(element => element = "2022-07-27T02:06:22.760Z");
+console.log(found);
 
 //14. Elaborar un programa que permita al admin a traves de prompts y alerts lo siguiente:
 // CREATE
