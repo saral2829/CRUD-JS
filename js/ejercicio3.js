@@ -13,6 +13,7 @@ let users = [
 //13. Crear una funcion que permita filtrar los usuarios por mes y año de creacion.
  
 // let month=prompt("Ingresar: ");let mes=+prompt("ingrese mes");
+let mes=+prompt("ingrese mes");
 let anio=+prompt("ingrese año");
 
 function filtrarUsuarios(year, month) {
