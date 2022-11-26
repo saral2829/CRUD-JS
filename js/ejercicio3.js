@@ -55,6 +55,36 @@ let users = [
    },
 ];
 
+
+//FIltrar mes y año
+let mes=+prompt("ingrese mes");
+let anio=+prompt("ingrese año");
+
+function filtrarUsuarios(year, month) {
+    month = month - 1;
+  
+    const usersFilter = users.filter((element) => {
+      let fecha = element.created_at;
+      // console.log(fecha);
+  
+      let nuevoDate = new Date(fecha);
+      // console.log(nuevoDate);
+  
+      let mes = nuevoDate.getMonth();
+      // console.log(mes);
+  
+      let anio = nuevoDate.getFullYear();
+      // console.log(anio);
+  
+      if (anio === year && mes === month) {
+        // console.log("heh");
+        return true;
+      }
+    });
+    console.log(usersFilter);
+  }
+  filtrarUsuarios(anio, mes);
+
 // Funcion para crear usuarios
 function create() {
    const newUser = {
@@ -75,10 +105,8 @@ function create() {
       } else {
          newUser[prop] = prompt(`Ingrese ${[prop]} por favor: `);
       }
-   }
-   users.push(newUser);
-   read();
-}
+    }
+  }
 
 // Funcion para leer los usuarios
 function read() {
