@@ -145,16 +145,16 @@ function update() {
 }
 
 // Eliminar usuario
-function del() {    
-   const indice = +prompt("Ingrese el id del usuario a eliminar: ")
-   const seguro = prompt("Esta usted seguro? Si/No")
-   if(seguro.toLowerCase() === "si"){
-      users.splice((indice-1),1)
-      alert("Usuario eliminado")
-   }else if(seguro.toLowerCase() === "no"){
-      alert("No se elimino ningun usuario")
-   }else {
-      alert("Ingrese una respuesta valida")
+function del() {
+   const indice = +prompt("Ingrese el id del usuario a eliminar: ");
+   const seguro = prompt("Esta usted seguro? Si/No");
+   if (seguro.toLowerCase() === "si") {
+      users.splice(indice - 1, 1);
+      alert("Usuario eliminado");
+   } else if (seguro.toLowerCase() === "no") {
+      alert("No se elimino ningun usuario");
+   } else {
+      alert("Ingrese una respuesta valida");
    }
    read();
 }
@@ -177,13 +177,12 @@ function sort_by_date(reverse = false) {
    read();
 }
 
-// Ordenar los registros de manera ascendente haciendo click y con el siguiente click descendente
-
-function sort_by_headers() {
+// Ordenas haciendo click en encabezados.
+function sort_by_headers(opt) {
    const ths = document.querySelectorAll("th");
    ths.forEach((th) => {
       th.addEventListener("click", (e) => {
-         sort_by_date();
+         sort_by_date(opt);
          read();
       });
    });
@@ -207,6 +206,7 @@ function new_button(name, color_over, color_out, event) {
    btn.style.color = "white";
    btn.style.height = "30px";
    btn.style.width = "100px";
+   btn.style.margin = "10px";
    btn.addEventListener("mouseover", () => {
       btn.style.backgroundColor = color_over;
    });
@@ -231,7 +231,7 @@ function main() {
    //delete
    new_button("Borrar", "red", "darkred", del);
    // Filtrar por
-   new_button("Filtrar", "brown", "darkbrown", filter_by);
+   new_button("Filtrar", "gray", "black", filter_by);
 }
 
 main();
