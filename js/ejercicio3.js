@@ -55,43 +55,26 @@ let users = [
    },
 ];
 
-//Ordenar de acuerdo a la fecha de creacion de usuario
-
-function ordenarUsuarios(array){
-   let usuariosOrd = array.sort((a,b) => b.created_at.localeCompare(a.created_at));
-   console.log('Del mas nuevo al mas antiguo:', usuariosOrd);
-   let usuariosDro = [...usuariosOrd].reverse();
-   console.log('Del mas antiguo al mas nuevo: ', usuariosDro);
-}
-
-//FIltrar mes y año
-let mes=+prompt("ingrese mes");
-let anio=+prompt("ingrese año");
-
+// Filtrar usuarios por año y mes
 function filtrarUsuarios(year, month) {
-    month = month - 1;
-  
-    const usersFilter = users.filter((element) => {
+   month = month - 1;
+
+   const usersFilter = users.filter((element) => {
       let fecha = element.created_at;
       // console.log(fecha);
-  
       let nuevoDate = new Date(fecha);
       // console.log(nuevoDate);
-  
       let mes = nuevoDate.getMonth();
       // console.log(mes);
-  
       let anio = nuevoDate.getFullYear();
       // console.log(anio);
-  
       if (anio === year && mes === month) {
-        // console.log("heh");
-        return true;
+         // console.log("heh");
+         return true;
       }
-    });
-    console.log(usersFilter);
-  }
-  filtrarUsuarios(anio, mes);
+   });
+   console.log(usersFilter);
+}
 
 // Funcion para crear usuarios
 function create() {
@@ -105,7 +88,7 @@ function create() {
    };
    for (const prop in newUser) {
       if (prop === "id") {
-         newUser[prop] = users.length + 1;
+         newUser[prop] = users[users.length - 1].id + 1;
       } else if (prop === "edad") {
          newUser[prop] = +prompt(`Ingrese ${[prop]} por favor: `);
       } else if (prop === "created_at") {
@@ -113,11 +96,13 @@ function create() {
       } else {
          newUser[prop] = prompt(`Ingrese ${[prop]} por favor: `);
       }
-    }
-  }
+   }
+   users.push(newUser);
+   read(users);
+}
 
-// Funcion para leer los usuarios
-function read() {
+// Tabla de usuarios
+function users_table(users) {
    const root = document.getElementById("root");
    root.innerHTML = "";
 
@@ -154,7 +139,11 @@ function read() {
    });
    const br = document.createElement("br");
    root.append(br);
-   return;
+}
+
+// Leer tabla de usuarios
+function read(users) {
+   users_table(users);
 }
 
 // Actualizar usuarios
@@ -177,22 +166,22 @@ function update() {
    } else {
       alert("Usuario no existe");
    }
-   read();
+   read(users);
 }
 
 // Eliminar usuario
-function del() {    
-   const indice = +prompt("Ingrese el id del usuario a eliminar: ")
-   const seguro = prompt("Esta usted seguro? Si/No")
-   if(seguro.toLowerCase() === "si"){
-      users.splice((indice-1),1)
-      alert("Usuario eliminado")
-   }else if(seguro.toLowerCase() === "no"){
-      alert("No se elimino ningun usuario")
-   }else {
-      alert("Ingrese una respuesta valida")
+function del() {
+   const indice = +prompt("Ingrese el id del usuario a eliminar: ");
+   const seguro = prompt("Esta usted seguro? Si/No");
+   if (seguro.toLowerCase() === "si") {
+      users.splice(indice - 1, 1);
+      alert("Usuario eliminado");
+   } else if (seguro.toLowerCase() === "no") {
+      alert("No se elimino ningun usuario");
+   } else {
+      alert("Ingrese una respuesta valida");
    }
-   read();
+   read(users);
 }
 
 // Ordenar por fecha
@@ -210,17 +199,16 @@ function sort_by_date(reverse = false) {
          return dateA - dateB;
       });
    }
-   read();
+   read(users);
 }
 
-// Ordenar los registros de manera ascendente haciendo click y con el siguiente click descendente
-
-function sort_by_headers() {
+// Ordenas haciendo click en encabezados.
+function sort_by_headers(opt) {
    const ths = document.querySelectorAll("th");
    ths.forEach((th) => {
       th.addEventListener("click", (e) => {
-         sort_by_date();
-         read();
+         sort_by_date(opt);
+         read(users);
       });
    });
 }
@@ -232,17 +220,29 @@ function filter_by() {
       const date = new Date(user.created_at);
       return date.getMonth() == month;
    });
+   read(filtered);
+}
+
+// Filtrar por fecha. Formato: yyyy-mm-dd
+function filter_by_date() {
+   const newDate = prompt("Ingrese una fecha. Formato: yyyy-mm-dd: ");
+   const filtered = users.filter((user) => {
+      const userDate = user.created_at.split("T")[0];
+      return userDate === newDate;
+   });
+   read(filtered);
 }
 
 // Funcion para crear botones
-function new_button(name, color_over, color_out, event) {
+function new_button(name, color_over, color_out, event, params = null) {
    let btn = document.createElement("button");
    btn.textContent = name;
-   btn.style.backgroundColor = color_over;
+   btn.style.backgroundColor = color_out;
    btn.style.borderRadius = "10px";
    btn.style.color = "white";
    btn.style.height = "30px";
    btn.style.width = "100px";
+   btn.style.margin = "10px";
    btn.addEventListener("mouseover", () => {
       btn.style.backgroundColor = color_over;
    });
@@ -250,24 +250,24 @@ function new_button(name, color_over, color_out, event) {
       btn.style.backgroundColor = color_out;
    });
    btn.addEventListener("click", () => {
-      event();
+      event(params);
    });
    document.body.appendChild(btn);
 }
 
 function main() {
-   read();
-   sort_by_headers();
+   read(users);
+   sort_by_headers(true);
    //create
    new_button("Crear", "green", "darkgreen", create);
    //read
-   new_button("Leer", "blue", "darkblue", read);
+   new_button("Leer", "blue", "darkblue", read, users);
    //update
    new_button("Actualizar", "orange", "darkorange", update);
    //delete
    new_button("Borrar", "red", "darkred", del);
    // Filtrar por
-   new_button("Filtrar", "brown", "darkbrown", filter_by);
+   new_button("Filtrar", "gray", "black", filter_by_date);
 }
 
 main();
