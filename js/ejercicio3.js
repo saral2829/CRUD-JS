@@ -55,6 +55,14 @@ let users = [
    },
 ];
 
+//Ordenar de acuerdo a la fecha de creacion de usuario
+
+function ordenarUsuarios(array){
+   let usuariosOrd = array.sort((a,b) => b.created_at.localeCompare(a.created_at));
+   console.log('Del mas nuevo al mas antiguo:', usuariosOrd);
+   let usuariosDro = [...usuariosOrd].reverse();
+   console.log('Del mas antiguo al mas nuevo: ', usuariosDro);
+}
 
 //FIltrar mes y año
 let mes=+prompt("ingrese mes");
